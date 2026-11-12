@@ -1,0 +1,6 @@
+{
+  "name": "Kisan Drishti AI",
+  "description": "AI-powered crop health analysis, digital crop health passport, and agricultural guidance for Indian farmers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

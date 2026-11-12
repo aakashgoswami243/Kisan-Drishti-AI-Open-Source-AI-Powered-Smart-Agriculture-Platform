@@ -1,0 +1,188 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Farmer profile and language/district preferences",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "User identifier matching auth.uid"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Farmer name"
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "description": "Preferred language code (gu, hi, en)"
+        },
+        "district": {
+          "type": "string",
+          "description": "Agricultural district in Gujarat / India"
+        },
+        "primaryCrops": {
+          "type": "array",
+          "description": "Primary crops grown by the farmer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Document creation timestamp. Server timestamp required."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Document update timestamp. Server timestamp required."
+        }
+      },
+      "required": ["userId", "displayName", "preferredLanguage", "createdAt"]
+    },
+    "CropScan": {
+      "title": "CropScan",
+      "description": "Individual crop health scans and Gemini AI observations",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner user identifier"
+        },
+        "cropName": {
+          "type": "string",
+          "description": "Name of the crop (e.g. Cotton, Groundnut, Wheat)"
+        },
+        "cropStage": {
+          "type": "string",
+          "description": "Growth stage of the crop"
+        },
+        "symptomsDescription": {
+          "type": "string",
+          "description": "Farmer entered symptoms description"
+        },
+        "district": {
+          "type": "string",
+          "description": "District where crop is grown"
+        },
+        "photoUri": {
+          "type": "string",
+          "description": "Image reference or URI for the photographed crop"
+        },
+        "visibleSymptoms": {
+          "type": "array",
+          "description": "List of visible symptoms observed by Gemini AI"
+        },
+        "possibleCauses": {
+          "type": "array",
+          "description": "List of possible causes identified by AI"
+        },
+        "uncertaintyLevel": {
+          "type": "string",
+          "description": "AI uncertainty level (Low, Medium, High)"
+        },
+        "missingInformation": {
+          "type": "array",
+          "description": "List of questions or missing information needed to narrow down"
+        },
+        "safeNextSteps": {
+          "type": "array",
+          "description": "Safe, non-prescriptive next steps for the farmer"
+        },
+        "expertReferralRequired": {
+          "type": "boolean",
+          "description": "Whether an in-person agricultural expert consultation is recommended"
+        },
+        "disclaimer": {
+          "type": "string",
+          "description": "Safety disclaimer regarding AI suggestions"
+        },
+        "language": {
+          "type": "string",
+          "description": "Language used for the analysis"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional farmer notes"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Scan timestamp. Server timestamp required."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp. Server timestamp required."
+        }
+      },
+      "required": ["userId", "cropName", "createdAt"]
+    },
+    "FollowUpScan": {
+      "title": "FollowUpScan",
+      "description": "Follow-up monitoring comparison record for an existing crop scan",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner user identifier"
+        },
+        "scanId": {
+          "type": "string",
+          "description": "Parent CropScan document ID"
+        },
+        "cropName": {
+          "type": "string",
+          "description": "Crop name"
+        },
+        "previousPhotoUri": {
+          "type": "string",
+          "description": "Previous photo URI reference"
+        },
+        "currentPhotoUri": {
+          "type": "string",
+          "description": "New follow-up photo URI"
+        },
+        "visibleDifferences": {
+          "type": "array",
+          "description": "Visible differences observed between scans"
+        },
+        "updatedObservations": {
+          "type": "string",
+          "description": "AI updated observation summary"
+        },
+        "suggestedNextSteps": {
+          "type": "array",
+          "description": "Next actions suggested after comparison"
+        },
+        "farmerNotes": {
+          "type": "string",
+          "description": "Farmer notes for this follow-up"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Follow-up timestamp. Server timestamp required."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp. Server timestamp required."
+        }
+      },
+      "required": ["userId", "scanId", "cropName", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Farmer profile and preferences"
+    },
+    "/users/{userId}/scans/{scanId}": {
+      "schema": "CropScan",
+      "description": "Individual crop health scans and AI observations"
+    },
+    "/users/{userId}/follow_ups/{followUpId}": {
+      "schema": "FollowUpScan",
+      "description": "Follow-up monitoring entries comparing previous and current crop status"
+    }
+  }
+}
